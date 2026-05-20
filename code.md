@@ -108,3 +108,10 @@ It intentionally avoids project-, framework-, vendor-, and repository-specific g
 - If a function/method becomes hard to scan, split it.
 - If a file/module becomes a “dumping ground”, reorganize around responsibilities.
 - Prefer cohesive modules over large, interdependent ones.
+
+## Private information
+
+ - The exploration/intermediary artifacts like subagent code analysis results must never be committed.
+ - All PII and infrastructure identification items must be replaced with example-style entities. e.g. domains - with example.com, usernames - with relevant example users, IP address with respective TEST-NET-1,2,3 IPs. Emails - with example emails and so forth.
+ - When appropriate - the placeholders and monikers could be used.
+ - The same applies to documentation and plans that goes to commit.

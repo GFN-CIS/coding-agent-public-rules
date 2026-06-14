@@ -30,6 +30,12 @@ Avoid tests that only check:
 - an internal cache/private variable changes,
 - names/strings/paths that can be refactored without changing behavior.
 
+Test languages:
+ - For the programming language-specific projects (e.g. python, js, java, php, etc) - prefer using language-specific testing framework.
+ - For the non-programming projects (pipes, contracts, terraform, ansible) prefer either using specific framework that best suit needs or using python testing framework.
+ - The shell-script based tests should be used only as a last resort.
+ - The data tests should avoid using "grep" for testing unless it is really fits best. Avoid using grep-like tests for the structured data. 
+
 Prefer tests that verify at least one of:
 
 - output values,

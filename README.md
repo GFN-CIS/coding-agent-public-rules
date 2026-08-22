@@ -1,4 +1,4 @@
-# global-rules
+# Agentic coding bible
 These are organization-wide **public** rules intended for both humans and automated agents.
 
 # Agent must check all the files in the repo during review.

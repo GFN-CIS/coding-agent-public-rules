@@ -2,6 +2,7 @@
 
 This document defines organization-wide, **language-agnostic** engineering rules.
 It intentionally avoids project-, framework-, vendor-, and repository-specific guidance.
+They apply to any type of code: either programming code or infrastructure code (ansible, terraform/tofu, etc).
 
 ## Non-negotiables
 
@@ -38,6 +39,10 @@ It intentionally avoids project-, framework-, vendor-, and repository-specific g
   - and returning to a safe, predictable state.
 - Prefer returning structured errors or raising exceptions over returning ambiguous values.
 
+## Legacy dishonor
+
+- If the part of code is copypasted from another code do not honor in by default as a good one just for the reason it pre-existed. If that copypasted code presents not optimal approach: inform user.
+
 ## Logging & observability
 
 - Use the project’s logging system (not ad-hoc printing).
@@ -63,6 +68,7 @@ It intentionally avoids project-, framework-, vendor-, and repository-specific g
 - Configuration should be explicit, versioned (when appropriate), and documented.
 - Keep environment differences in config, not in code forks.
 - Do not duplicate configuration across multiple places without a single source of truth.
+- Never match the textual errors since they can be in another languages on some systems.
 
 ## Documentation
 

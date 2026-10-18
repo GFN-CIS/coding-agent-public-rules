@@ -3,6 +3,8 @@
 - Always prefer using Ansible modules and roles instead of shell scripting.
 - Avoid creating shell scripts from templates. Prefer standard shell + input data approach.
 - Avoid using global become for hosts. Use become only where needed on per-task or per-block level.
+- Input validations/system/environment assession and asserts within playbook/role should be made, if possible, before any changes introduced by role are made to the system.
+
 
 
   

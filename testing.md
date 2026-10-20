@@ -94,11 +94,16 @@ Keep each test focused on one scenario.
 - Avoid shared mutable global state.
 - Every test must be runnable in parallel with others.
 
-## Naming and intent
+## Test naming and lifecycle
 
-- Test names must describe **behavior** and the condition under which it holds.
-  - Good pattern: `test_<behavior>_<condition>_<expected>` (adapt to project conventions).
-- Prefer many small, readable tests over one large test that hides multiple behaviors.
+- **Persistent tests:** Use descriptive names reflecting the behavior, conditions, and expected outcome. Follow project conventions, e.g. `test_<behavior>_<condition>_<expected>`.
+- **Regression tests:** Name by the behavior being protected, not by ticket IDs or implementation details.
+- **Disposable tests:** Tests created solely to verify completion of a specific task, without protecting against a plausible future regression.
+  - MUST use the naming pattern `disposable_test_<purpose>`. The test creation date must be present in docstring.
+  - MUST NOT be committed to the repository or included in permanent test suites.
+  - MUST be removed after successful verification.
+- **Retention rule:** Every persistent test MUST protect against an identifiable future regression. Otherwise, treat it as disposable.
+- **Avoid unnecessary tests:** Prefer existing tools and checks (e.g. `git diff`, static analysis) over creating disposable tests when sufficient.
 
 ## Test documentation rules
 

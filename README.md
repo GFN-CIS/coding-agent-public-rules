@@ -4,6 +4,8 @@ These are organization-wide **public** rules intended for both humans and automa
 # Agent must check all the files in the repo during review.
 
 # Specific rules
+- During review, evaluate the overall solution against requirements, established architecture, applicable ADRs, and simpler approaches. Ground findings in concrete impact and distinguish defects from optional improvements.
+- For CI/CD changes, apply [`specific/ci-cd.md`](specific/ci-cd.md) alongside the general rules.
 - Keep rules language-agnostic and free of project-specific details or IP.
 - Documentation and comments must be understandable to both humans and agents (do not maintain separate “human” vs “agent” versions).
 - Avoid emojis in logs, comments, and documentation.

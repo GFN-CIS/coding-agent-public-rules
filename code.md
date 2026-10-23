@@ -62,12 +62,14 @@ They apply to any type of code: either programming code or infrastructure code (
 
  - Do not maintain backward compatibility unless explicitly instructed.
  - If you see potential backward compatibility issues - ask user explicitly wether to maintain backward compatibility.
+ - For published interfaces and schemas, identify affected consumers and communicate breaking changes through the applicable versioning scheme. Do not introduce compatibility layers unless explicitly agreed.
 
 ## Configuration & portability
 
 - Configuration should be explicit, versioned (when appropriate), and documented.
 - Keep environment differences in config, not in code forks.
 - Do not duplicate configuration across multiple places without a single source of truth.
+- Before adding an input, default, or mapping, check whether its value can be derived from existing metadata or provided by the platform. Avoid identity mappings and redundant transformations.
 - Never match the textual errors since they can be in another languages on some systems.
 
 ## Documentation
@@ -88,6 +90,7 @@ They apply to any type of code: either programming code or infrastructure code (
 ## Development practices
 
 - Before writing new code, first analyze the project for existing functionality that can be reused (internal utilities, shared modules, existing services, established patterns).
+- For migrations and replacements, establish existing behavior and agreed scope before editing. Preserve out-of-scope behavior, including execution order and external contracts, and identify intentional deviations.
 - For platform/framework/language-specific rules, in addition to this file, also check relevant files in the `specific` folder.
 - Avoid ad-hoc solutions. New changes must fit the project’s architecture and established patterns.
 - Avoid “hotfixes” when a proper solution is feasible. If a hotfix is unavoidable, align it with the user and document the trade-offs and follow-up plan.

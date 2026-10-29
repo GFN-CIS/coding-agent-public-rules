@@ -103,7 +103,7 @@ They apply to any type of code: either programming code or infrastructure code (
   - **Class/module docs**: the big picture, invariants, and links to the relevant functions/methods for details.
   - **Module/package README**: the most general overview (architecture/usage), linking to module/class docs.
 - Any deviation from the project’s current ideology/architecture or from common best practices must be documented: what we changed and why.
-- Functions/methods/classes must include docstrings (or the language’s equivalent structured API documentation comments) in the same style/format adopted by the repository (be consistent within the project).
+- Public functions/methods/classes/modules must include docstrings (or the language’s equivalent structured API documentation comments) in the same style/format adopted by the repository (be consistent within the project). A docstring states the contract and what is not obvious from the name and signature; it does not restate the code. A private helper whose name and signature say everything needs none.
 - Keep docs close to the code they describe (README in the relevant directory/module): function/methods/classes/modules - in appropriate docstrings. Packages - in readme.md within package folder.
 - Update documentation when changing behavior, public APIs, or operational requirements.
 - When correctness or security relies on a dependency's behaviour, verify that behaviour in the dependency's source or official docs, pin it with a test, and document which guarantees come from the dependency and which are enforced by our code. Mark our own safeguards as such, so they are not removed as "already handled by the library".

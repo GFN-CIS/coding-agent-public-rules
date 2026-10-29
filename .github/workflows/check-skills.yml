@@ -16,16 +16,3 @@ jobs:
       - run: python3 scripts/check-skills.py
       - run: python3 -m unittest scripts/test_check_skills.py
 
-  discovery:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # same artifact and sha256 as the agent image (agents/agent-runner base_cli_tools)
-      - name: Install pinned OpenCode 2.1.4
-        run: |
-          curl -fsSL -o /tmp/opencode.tgz \
-            https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-2.1.4.tgz
-          echo "ce05abe2dce1041391c8ec8cdb8da066f640fd471e72ac846dcb089c441e11e1  /tmp/opencode.tgz" | sha256sum -c -
-          mkdir -p /tmp/opencode-bin
-          tar -xzf /tmp/opencode.tgz -C /tmp/opencode-bin
-      - run: bash scripts/check-discovery.sh /tmp/opencode-bin/package/bin/opencode

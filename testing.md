@@ -67,6 +67,11 @@ Prefer tests that verify at least one of:
 
 Always choose the lowest-cost test type that reliably validates the behavior.
 
+- Test doubles encode our assumptions about external systems. Verify each external contract the code depends on (authentication, error shapes, status codes, pagination) at least once against the real system, in a sandbox, before relying on it, and again when the integration changes.
+- Live and E2E tests run under dedicated test identities with least privilege, provisioned as code; never under production identities.
+- Production interfaces do not carry test-only parameters; stub at the transport boundary instead.
+- Shared test data (identities, entities, payloads) is defined once in fixtures or factories; duplicated test data drifts silently.
+
 ## Test placement (where tests live)
 
 - **Unit tests** should live *next to the code they test* : inside/near the module/package in folder like 'tests' or another best-practice language or framework-specific folder.

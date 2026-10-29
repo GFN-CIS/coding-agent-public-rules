@@ -2,6 +2,10 @@
 name: gfn-infrastructure
 description: Use when writing or reviewing infrastructure declarations in any technology (Terraform, Helm, cloud config). Covers native functions over templating, configuration at its natural ownership scope, and tracing the deployed path for externally reachable changes.
 ---
+## Required standards
+
+Apply together with skill `gfn-code`.
+
 # General infrastructure declaration/coding rules 
 
 1. Never use templating to get some info when system provides appropriate functions to get it. Consider using system's functions

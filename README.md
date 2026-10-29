@@ -25,3 +25,9 @@ frontmatter must equal the directory name. CI (`scripts/check-skills.py`) enforc
 | `gfn-docker` | Dockerfiles and long-lived containers |
 | `gfn-infrastructure` | Infrastructure declarations in any technology |
 | `gfn-kubernetes` | Kubernetes manifests and Helm charts |
+
+## Using the skills
+
+- OpenCode 2: clone the repo and add the clone path to the `skills` array in `opencode.json`, e.g. `"skills": ["/path/to/coding-agent-public-rules"]`.
+- Other harnesses: copy or symlink the `gfn-*` directories into the harness's own skills directory.
+- `gfn-code-health-check` is hidden from automatic selection by `metadata: opencode/autoinvoke: false` in OpenCode 2; harnesses that ignore that key still see its description "use only when explicitly asked".

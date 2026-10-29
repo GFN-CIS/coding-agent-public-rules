@@ -1,6 +1,6 @@
 ---
 name: gfn-code
-description: Use when writing or modifying any code, application or infrastructure, in any language. Covers naming, formatting, static analysis, error handling, external calls, security, logging, documentation, and dependency choices.
+description: Mandatory GFN engineering standards for all application and infrastructure code in any language. Apply when writing, modifying, refactoring, debugging, analyzing, or reviewing code, including changes produced by other agents.
 ---
 # Global Coding Rules (Language-Agnostic)
 

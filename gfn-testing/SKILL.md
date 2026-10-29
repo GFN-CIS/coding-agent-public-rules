@@ -2,6 +2,10 @@
 name: gfn-testing
 description: Use when writing, updating, or reviewing tests, or whenever a change needs test coverage. Covers behavior-over-shape assertions, anti-patterns, test placement, determinism, naming (including disposable tests), and docstring templates.
 ---
+## Required standards
+
+Apply together with skill `gfn-code`.
+
 # Test Organization & Documentation Rules (Language-Agnostic)
 
 This document defines organization-wide, **language-agnostic** rules for:

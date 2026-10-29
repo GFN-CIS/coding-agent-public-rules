@@ -92,6 +92,43 @@ class CheckSkillsTest(unittest.TestCase):
               "---\nname: readme\ndescription: Use when x\n---\n")
         self.assertTrue(any("README.md" in e for e in self.check()))
 
+    def test_block_scalar_description(self):
+        write(self.root, "gfn-code/SKILL.md",
+              "---\nname: gfn-code\ndescription: >\n  Use when changing\n  code\n---\nbody\n")
+        self.assertEqual(self.check(), [])
+        meta, err = check_skills.parse_frontmatter(
+            (self.root / "gfn-code" / "SKILL.md").read_text(encoding="utf-8"))
+        self.assertIsNone(err)
+        self.assertEqual(meta["description"].strip(), "Use when changing code")
+
+    def test_empty_body(self):
+        write(self.root, "gfn-code/SKILL.md",
+              "---\nname: gfn-code\ndescription: Use when changing code\n---\n")
+        self.assertTrue(any("body is empty" in e for e in self.check()))
+
+    def test_description_too_long(self):
+        write(self.root, "gfn-code/SKILL.md",
+              f"---\nname: gfn-code\ndescription: {'x' * 1025}\n---\nbody\n")
+        self.assertTrue(any("description exceeds 1024" in e for e in self.check()))
+
+    def test_unknown_referenced_id(self):
+        make_passing_tree(self.root)
+        write(self.root, "gfn-code/SKILL.md",
+              "---\nname: gfn-code\ndescription: Use when changing code\n---\nsee `gfn-nope`\n")
+        errors = self.check()
+        self.assertTrue(any("gfn-nope" in e for e in errors))
+        self.assertTrue(any("gfn-code/SKILL.md" in e for e in errors))
+
+    def test_agents_md_allowed(self):
+        make_passing_tree(self.root)
+        write(self.root, "AGENTS.md", "# agent instructions\n")
+        self.assertEqual(self.check(), [])
+
+    def test_metadata_not_mapping(self):
+        write(self.root, "gfn-code/SKILL.md",
+              "---\nname: gfn-code\ndescription: Use when changing code\nmetadata: nope\n---\nbody\n")
+        self.assertTrue(any("metadata must be a mapping" in e for e in self.check()))
+
 
 if __name__ == "__main__":
     unittest.main()

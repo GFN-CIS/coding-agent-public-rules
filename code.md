@@ -27,6 +27,13 @@ They apply to any type of code: either programming code or infrastructure code (
 - entities names styling should be consistent within parent entity->module->project for same entity classes. e.g. if parent entity uses snake_case for variables - model should use it, if parent uses CamelCase for variables - model should use it and so forth.  
 - entities naming structure should  be consistent within project for the same class and function of entities. For example, if some flag variables within module has structure flag_entity_flagname model should consider use it instead of, say entity_flag_flagname, or only flagname. 
 
+## Formatting and static analysis
+
+- Format code with the language's canonical formatter style at its default settings (e.g. gofmt, rustfmt, Prettier, Black style). This is the style humans and models read most reliably; deviations from defaults need a documented reason.
+- Use the strictest standard static analysis of the ecosystem, opt-out rather than opt-in: enable all rules of the linter and the strict mode of the type checker, then disable individual rules only for a documented reason (conflict with the formatter, mutually exclusive rules, not applicable to the project). Stricter checks fail bad code earlier.
+- Suppressions are local, name the exact rule and give a reason. Blanket suppressions (whole-file, rule-less ignore comments, global "ignore missing types") are not allowed; stale suppressions are errors.
+- Analysis tool versions are pinned; new findings after a deliberate upgrade are fixed or explicitly suppressed, never silenced by loosening the config.
+
 ## Error handling (fail fast)
 
 - Do not swallow errors to “keep things running” if correctness is impacted.
@@ -38,6 +45,13 @@ They apply to any type of code: either programming code or infrastructure code (
   - logging context,
   - and returning to a safe, predictable state.
 - Prefer returning structured errors or raising exceptions over returning ambiguous values.
+- When wrapping errors into a common type, preserve the cause category (authentication, authorization, not found, conflict, rate limit, transient, malformed response) and the original status. Callers branch on it; collapsing categories turns operational failures into data errors.
+- Map third-party errors in one place, not per call site.
+
+## Calls to external systems
+
+- Retry policy follows idempotency: retry idempotent reads on transient failures; never blindly retry non-idempotent writes. Where a write may have been applied, re-read state before deciding to retry.
+- Every external call has a timeout and a bounded retry budget. Waits, counts and sizes dictated by the remote side (Retry-After, rate-limit resets, page counts, payload sizes) are external input: cap them and fail fast beyond the cap.
 
 ## Legacy dishonor
 
@@ -57,6 +71,10 @@ They apply to any type of code: either programming code or infrastructure code (
 - Prefer safe-by-default APIs; only bypass escaping/safety checks with a clear justification.
 - Apply least privilege: scope permissions, credentials, and access as narrowly as possible.
 - Avoid dynamic code execution (e.g., eval/templated SQL) unless there is no safer alternative and it is reviewed.
+- Credentials are bound to an origin (scheme, host and port). Never send them to a URL taken from a response (pagination links, redirects, callbacks) without checking it against the configured origin; disable automatic redirects on authenticated clients.
+- Security decisions on structured identifiers (URLs, paths, hostnames, IPs, emails) must compare parsed components, never string prefixes or substrings.
+- Identify actors by immutable IDs, not by mutable names (usernames, display names, emails).
+- State or idempotency markers stored in places other users can write (comments, labels, descriptions, tags) must be authenticated by their author's identity before they are trusted.
 
 ## Backward compatibility
 
@@ -86,11 +104,14 @@ They apply to any type of code: either programming code or infrastructure code (
 - Functions/methods/classes must include docstrings (or the language’s equivalent structured API documentation comments) in the same style/format adopted by the repository (be consistent within the project).
 - Keep docs close to the code they describe (README in the relevant directory/module): function/methods/classes/modules - in appropriate docstrings. Packages - in readme.md within package folder.
 - Update documentation when changing behavior, public APIs, or operational requirements.
+- When correctness or security relies on a dependency's behaviour, verify that behaviour in the dependency's source or official docs, pin it with a test, and document which guarantees come from the dependency and which are enforced by our code. Mark our own safeguards as such, so they are not removed as "already handled by the library".
 
 ## Development practices
 
 - Before writing new code, first analyze the project for existing functionality that can be reused (internal utilities, shared modules, existing services, established patterns).
 - For migrations and replacements, establish existing behavior and agreed scope before editing. Preserve out-of-scope behavior, including execution order and external contracts, and identify intentional deviations.
+- When replacing a foundation (library, framework, client, platform), re-evaluate everything that was shaped around the old one: wrappers, error mapping, retries, test doubles, comments, design rationale. Code that is still used but whose original reason no longer holds is leftover, same as dead code.
+- Adopt a dependency at the abstraction level it offers. Using a high-level library as a bare transport underneath a hand-written layer that duplicates its API needs a documented reason.
 - For platform/framework/language-specific rules, in addition to this file, also check relevant files in the `specific` folder.
 - Avoid ad-hoc solutions. New changes must fit the project’s architecture and established patterns.
 - Avoid “hotfixes” when a proper solution is feasible. If a hotfix is unavoidable, align it with the user and document the trade-offs and follow-up plan.
@@ -102,6 +123,8 @@ They apply to any type of code: either programming code or infrastructure code (
     - inlining would not push the caller over ~300 lines,
     - and there is no serious reason to keep it separate (e.g., a stable public API, reuse expected soon, complex test isolation, performance constraints, security boundaries).
 - Regularly sanity-check that we are not reinventing the wheel: prefer mature, actively maintained libraries/tools (as of 2026) over bespoke implementations.
+- Before adding a dependency for a narrow need, check whether the existing stack already covers it. Weigh the transitive footprint and the second set of failure modes, test doubles and updates it brings. Do not introduce a second client or stack for a protocol the project already speaks.
+- However, when a mature higher-level dependency would cover the need and replace hand-written code around a lower-level one, propose migrating to it rather than extending the low-level layer; agree the migration scope with the user before starting.
 - When introducing or using external dependencies, keep them up to date (as of 2026) unless the project documentation explicitly pins or forbids specific versions.
 - When considering a library/framework/plugin/etc., always verify that it is updated frequently enough and that the chosen version is current for the year 2026.
 - Always check for leftover/dead code introduced by refactors (unused functions, unreachable branches, stale TODOs, commented-out blocks). Ask the user for permission before removing it, and remove it only with explicit user approval.
@@ -124,3 +147,4 @@ They apply to any type of code: either programming code or infrastructure code (
  - All PII and infrastructure identification items must be replaced with example-style entities. e.g. domains - with example.com, usernames - with relevant example users, IP address with respective TEST-NET-1,2,3 IPs. Emails - with example emails and so forth.
  - When appropriate - the placeholders and monikers could be used.
  - The same applies to documentation and plans that goes to commit.
+ - Sanitization covers branch history, not only the final diff: identifiers committed earlier on the branch must be removed by squash or rewrite before merge.

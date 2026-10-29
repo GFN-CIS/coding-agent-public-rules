@@ -15,3 +15,16 @@ jobs:
       - run: python3 -m pip install pyyaml==6.0.3
       - run: python3 scripts/check-skills.py
       - run: python3 -m unittest scripts/test_check_skills.py
+
+  discovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned OpenCode v2.2.1
+        run: |
+          curl -fsSL -o /tmp/opencode.tar.gz \
+            https://github.com/anomalyco/opencode/releases/download/v2.2.1/opencode-linux-x64.tar.gz
+          echo "3179551ddf69877ca24a960b0175e94405cf3f52147f1eec705094374bef49f2  /tmp/opencode.tar.gz" | sha256sum -c -
+          mkdir -p /tmp/opencode-bin
+          tar -xzf /tmp/opencode.tar.gz -C /tmp/opencode-bin
+      - run: bash scripts/check-discovery.sh /tmp/opencode-bin/opencode

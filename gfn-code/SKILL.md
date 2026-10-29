@@ -1,3 +1,7 @@
+---
+name: gfn-code
+description: Mandatory GFN engineering standards for all application and infrastructure code in any language. Apply when writing, modifying, refactoring, debugging, analyzing, or reviewing code, including changes produced by other agents.
+---
 # Global Coding Rules (Language-Agnostic)
 
 This document defines organization-wide, **language-agnostic** engineering rules.
@@ -92,19 +96,31 @@ They apply to any type of code: either programming code or infrastructure code (
 
 ## Documentation
 
-- Document **why** something is done, not only **what** is done.
-- Documentation and comments must be understandable to both humans and automated agents.
-  - Do not duplicate the same content as separate “for humans” and “for agents” versions.
+- Do not duplicate the same content as separate “for humans” and “for agents” versions.
 - Avoid emojis in documentation and comments.
 - Avoid documentation duplication by using a layered approach and links:
   - **Function/method docstrings**: detailed behavior/contract, inputs/outputs, edge cases.
   - **Class/module docs**: the big picture, invariants, and links to the relevant functions/methods for details.
   - **Module/package README**: the most general overview (architecture/usage), linking to module/class docs.
 - Any deviation from the project’s current ideology/architecture or from common best practices must be documented: what we changed and why.
-- Functions/methods/classes must include docstrings (or the language’s equivalent structured API documentation comments) in the same style/format adopted by the repository (be consistent within the project).
+- Public functions/methods/classes/modules must include docstrings (or the language’s equivalent structured API documentation comments) in the same style/format adopted by the repository (be consistent within the project). A docstring states the contract and what is not obvious from the name and signature; it does not restate the code. A private helper whose name and signature say everything needs none.
 - Keep docs close to the code they describe (README in the relevant directory/module): function/methods/classes/modules - in appropriate docstrings. Packages - in readme.md within package folder.
 - Update documentation when changing behavior, public APIs, or operational requirements.
 - When correctness or security relies on a dependency's behaviour, verify that behaviour in the dependency's source or official docs, pin it with a test, and document which guarantees come from the dependency and which are enforced by our code. Mark our own safeguards as such, so they are not removed as "already handled by the library".
+
+### Respect the Human Reader
+
+Documentation, comments, and runbooks are written for both humans and AI agents. They MUST be clear, concise, and useful to both.
+
+- **Respect the reader's time.** Avoid walls of text, repetition, filler, and explanations that add no practical value. More documentation does not necessarily mean better documentation.
+- **Document what matters.** Focus on project-specific decisions, constraints, invariants, non-obvious behavior, and operational knowledge.
+- **Do not duplicate common knowledge.** Assume a competent developer or AI agent already understands established concepts, technologies, and standard practices. When additional context is useful, provide a short discovery hint (e.g., `Search for "PostgreSQL MVCC"`), rather than reproducing explanations or embedding unnecessary external URLs.
+- **Reference internal knowledge instead of copying it.** For information already documented within the project or organization, link to the authoritative source using a stable file path, document reference, or internal URL. Avoid creating competing copies that can become outdated.
+- **Explain why, not just what.** Do not narrate self-explanatory code. Document intent, trade-offs, and behavior that cannot be reliably inferred from the implementation or its references.
+- **Be concise without sacrificing precision.** Keep essential context and instructions directly available when correctness, safety, or independent execution depends on them. Never make critical procedures unusable merely to avoid repetition.
+- **Keep documentation actionable.** Prefer clear structure, concrete instructions, and relevant examples over lengthy prose.
+
+**The goal is not to minimize documentation. It is to maximize useful information while minimizing the reader's effort.**
 
 ## Development practices
 
@@ -112,7 +128,7 @@ They apply to any type of code: either programming code or infrastructure code (
 - For migrations and replacements, establish existing behavior and agreed scope before editing. Preserve out-of-scope behavior, including execution order and external contracts, and identify intentional deviations.
 - When replacing a foundation (library, framework, client, platform), re-evaluate everything that was shaped around the old one: wrappers, error mapping, retries, test doubles, comments, design rationale. Code that is still used but whose original reason no longer holds is leftover, same as dead code.
 - Adopt a dependency at the abstraction level it offers. Using a high-level library as a bare transport underneath a hand-written layer that duplicates its API needs a documented reason.
-- For platform/framework/language-specific rules, in addition to this file, also check relevant files in the `specific` folder.
+- For platform/framework/language-specific rules, in addition to this skill, also load the relevant skill (e.g. `gfn-python`, `gfn-terraform`).
 - Avoid ad-hoc solutions. New changes must fit the project’s architecture and established patterns.
 - Avoid “hotfixes” when a proper solution is feasible. If a hotfix is unavoidable, align it with the user and document the trade-offs and follow-up plan.
 - Follow the code-organization principles used in the project (e.g., OOP-style codebases should remain OOP; modular codebases should remain modular; functional codebases should remain functional). If the requested functionality does not fit existing approaches, agree on the approach with the user before introducing a new paradigm.

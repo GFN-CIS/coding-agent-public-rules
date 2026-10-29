@@ -1,3 +1,11 @@
+---
+name: gfn-ansible
+description: Use when writing or reviewing Ansible playbooks and roles, e.g. `playbook.yml`, `roles/`, or `ansible.cfg`. Prefers modules over shell scripting, per-task become, and input validation/asserts before any system change.
+---
+## Required standards
+
+Apply together with skills `gfn-code` and `gfn-infrastructure`.
+
 # Ansible Rules
 
 - Always prefer using Ansible modules and roles instead of shell scripting.

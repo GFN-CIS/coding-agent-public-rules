@@ -1,3 +1,7 @@
+---
+name: gfn-code
+description: Use when writing or modifying any code, application or infrastructure, in any language. Covers naming, formatting, static analysis, error handling, external calls, security, logging, documentation, and dependency choices.
+---
 # Global Coding Rules (Language-Agnostic)
 
 This document defines organization-wide, **language-agnostic** engineering rules.
@@ -112,7 +116,7 @@ They apply to any type of code: either programming code or infrastructure code (
 - For migrations and replacements, establish existing behavior and agreed scope before editing. Preserve out-of-scope behavior, including execution order and external contracts, and identify intentional deviations.
 - When replacing a foundation (library, framework, client, platform), re-evaluate everything that was shaped around the old one: wrappers, error mapping, retries, test doubles, comments, design rationale. Code that is still used but whose original reason no longer holds is leftover, same as dead code.
 - Adopt a dependency at the abstraction level it offers. Using a high-level library as a bare transport underneath a hand-written layer that duplicates its API needs a documented reason.
-- For platform/framework/language-specific rules, in addition to this file, also check relevant files in the `specific` folder.
+- For platform/framework/language-specific rules, in addition to this skill, also load the relevant skill (e.g. `gfn-python`, `gfn-terraform`).
 - Avoid ad-hoc solutions. New changes must fit the project’s architecture and established patterns.
 - Avoid “hotfixes” when a proper solution is feasible. If a hotfix is unavoidable, align it with the user and document the trade-offs and follow-up plan.
 - Follow the code-organization principles used in the project (e.g., OOP-style codebases should remain OOP; modular codebases should remain modular; functional codebases should remain functional). If the requested functionality does not fit existing approaches, agree on the approach with the user before introducing a new paradigm.

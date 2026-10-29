@@ -1,0 +1,13 @@
+name: check-skills
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check-skills.py
+      - run: python3 -m unittest scripts/test_check_skills.py

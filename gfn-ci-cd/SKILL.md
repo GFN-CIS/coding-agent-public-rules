@@ -1,6 +1,10 @@
+---
+name: gfn-ci-cd
+description: Use when creating or reviewing CI/CD configuration — pipeline files such as `.gitlab-ci.yml`, `.github/workflows/`, or `Jenkinsfile`, plus build, test, and deployment jobs. Covers verifying the effective pipeline, reusing shared components, avoiding redundant builds, executing new gates, and pinning toolchain versions.
+---
 # CI/CD Rules
 
-These rules supplement `code.md` for continuous integration, builds, and deployments.
+These rules supplement skill `gfn-code` for continuous integration, builds, and deployments.
 
 - **Verify the effective pipeline.** Check which jobs execute for relevant events and refs (branches, merge requests, tags, protected refs). Verify rule ordering, dependencies, and deployment gates. A green pipeline is insufficient when required checks did not run.
 - **Reuse shared components.** Prefer established build, test, and deployment components over copied pipeline logic. Centralize shared toolchain versions; introduce consumer-specific overrides only when justified.

@@ -1,4 +1,9 @@
-
+---
+name: gfn-code-health-check
+description: Use only when explicitly asked for a quantitative code-health analysis of a repository, component, or directory. Defines the RP/OP pressure model, tooling discovery procedure, and the required report format.
+metadata:
+  opencode/autoinvoke: false
+---
 # Task: Quantitative Code-Health Analysis of `<TARGET>`
 
 You are performing a **read-only quantitative analysis** of `<TARGET>` using the **RP/OP** pressure model defined below, plus standard supporting metrics. Use real tools — do NOT eyeball the code. All assumptions must be stated explicitly.

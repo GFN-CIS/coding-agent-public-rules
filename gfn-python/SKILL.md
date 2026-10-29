@@ -1,3 +1,7 @@
+---
+name: gfn-python
+description: Use when writing or reviewing Python code, `.py` files, `pyproject.toml`, or Python tests. Covers PEP8, Black-style formatting enforced by ruff, ruff with select ALL, mypy --strict, vulture, and pytest with pytest_deduplicate and mutmut.
+---
 # Rules for python code
 
 - Always use PEP8 styling when creating the code.

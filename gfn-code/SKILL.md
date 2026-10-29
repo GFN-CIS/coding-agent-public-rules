@@ -110,6 +110,20 @@ They apply to any type of code: either programming code or infrastructure code (
 - Update documentation when changing behavior, public APIs, or operational requirements.
 - When correctness or security relies on a dependency's behaviour, verify that behaviour in the dependency's source or official docs, pin it with a test, and document which guarantees come from the dependency and which are enforced by our code. Mark our own safeguards as such, so they are not removed as "already handled by the library".
 
+### Respect the Human Reader
+
+Documentation, comments, and runbooks are written for both humans and AI agents. They MUST be clear, concise, and useful to both.
+
+- **Respect the reader's time.** Avoid walls of text, repetition, filler, and explanations that add no practical value. More documentation does not necessarily mean better documentation.
+- **Document what matters.** Focus on project-specific decisions, constraints, invariants, non-obvious behavior, and operational knowledge.
+- **Do not duplicate common knowledge.** Assume a competent developer or AI agent already understands established concepts, technologies, and standard practices. When additional context is useful, provide a short discovery hint (e.g., `Search for "PostgreSQL MVCC"`), rather than reproducing explanations or embedding unnecessary external URLs.
+- **Reference internal knowledge instead of copying it.** For information already documented within the project or organization, link to the authoritative source using a stable file path, document reference, or internal URL. Avoid creating competing copies that can become outdated.
+- **Explain why, not just what.** Do not narrate self-explanatory code. Document intent, trade-offs, and behavior that cannot be reliably inferred from the implementation or its references.
+- **Be concise without sacrificing precision.** Keep essential context and instructions directly available when correctness, safety, or independent execution depends on them. Never make critical procedures unusable merely to avoid repetition.
+- **Keep documentation actionable.** Prefer clear structure, concrete instructions, and relevant examples over lengthy prose.
+
+**The goal is not to minimize documentation. It is to maximize useful information while minimizing the reader's effort.**
+
 ## Development practices
 
 - Before writing new code, first analyze the project for existing functionality that can be reused (internal utilities, shared modules, existing services, established patterns).

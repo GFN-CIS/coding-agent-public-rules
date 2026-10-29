@@ -3,8 +3,9 @@
 
 Validates all */SKILL.md files: frontmatter present, non-empty name and
 description, name == parent directory, name matches ^gfn-[a-z0-9-]+$,
-names globally unique, flat layout (only <root>/<id>/SKILL.md), and
-README.md carrying no skill description. Stdlib only.
+names globally unique, flat layout (only <root>/<id>/SKILL.md), no root
+*.md besides README.md, no gfn-* directory without SKILL.md, and README.md
+carrying no skill description. Stdlib only.
 """
 import re
 import sys
@@ -65,6 +66,13 @@ def collect_errors(root):
     for name, paths in sorted(names.items()):
         if len(paths) > 1:
             errors.append(f"duplicate skill name {name!r} in: {', '.join(paths)}")
+    # a rule added the old way (root *.md) or a skill dir without SKILL.md is never loaded
+    for path in sorted(root.glob("*.md")):
+        if path.name != "README.md":
+            errors.append(f"{path.name}: rule documents must be <id>/SKILL.md, not root *.md")
+    for path in sorted(root.glob("gfn-*/")):
+        if not (path / "SKILL.md").is_file():
+            errors.append(f"{path.name}/: skill directory has no SKILL.md")
     readme = root / "README.md"
     if readme.exists():
         meta, _ = parse_frontmatter(readme.read_text(encoding="utf-8"))

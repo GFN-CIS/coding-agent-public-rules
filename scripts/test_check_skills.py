@@ -76,6 +76,16 @@ class CheckSkillsTest(unittest.TestCase):
               "---\nname: gfn-nested\ndescription: Use when x\n---\n")
         self.assertTrue(any("must live directly under" in e for e in self.check()))
 
+    def test_stray_root_rule(self):
+        make_passing_tree(self.root)
+        write(self.root, "python.md", "# old-style rule\n")
+        self.assertTrue(any("python.md" in e for e in self.check()))
+
+    def test_skill_dir_without_skill_md(self):
+        make_passing_tree(self.root)
+        write(self.root, "gfn-foo/skill.md", "misspelled\n")
+        self.assertTrue(any("gfn-foo/" in e for e in self.check()))
+
     def test_readme_with_description(self):
         make_passing_tree(self.root)
         write(self.root, "README.md",

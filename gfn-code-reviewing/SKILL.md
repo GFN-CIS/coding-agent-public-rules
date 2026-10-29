@@ -10,3 +10,4 @@ _These rules are for Code-Reviewing process._
 4. On re-review, verify each item reported as fixed against the current code; do not accept closure claims.
 5. Scope is every line the change adds or modifies, regardless of which file it lives in or where the file came from.
 6. Check that design rationale (specs, ADRs, comments) still matches the implementation it justifies.
+7. Evaluate the overall solution against requirements, established architecture, applicable ADRs, and simpler approaches. Ground findings in concrete impact and distinguish defects from optional improvements.

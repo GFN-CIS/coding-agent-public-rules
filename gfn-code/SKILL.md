@@ -96,9 +96,7 @@ They apply to any type of code: either programming code or infrastructure code (
 
 ## Documentation
 
-- Document **why** something is done, not only **what** is done.
-- Documentation and comments must be understandable to both humans and automated agents.
-  - Do not duplicate the same content as separate “for humans” and “for agents” versions.
+- Do not duplicate the same content as separate “for humans” and “for agents” versions.
 - Avoid emojis in documentation and comments.
 - Avoid documentation duplication by using a layered approach and links:
   - **Function/method docstrings**: detailed behavior/contract, inputs/outputs, edge cases.

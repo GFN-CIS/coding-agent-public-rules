@@ -4,7 +4,7 @@
 #
 # Usage: check-discovery.sh <opencode-binary> [repo-root]
 #
-# Notes on the mechanism (verified against OpenCode v2.2.1):
+# Notes on the mechanism (verified against OpenCode 2.1.4 and 2.2.1):
 # - GET /api/skill returns [] until a location instance exists on the server;
 #   creating a session in a directory (POST /api/session, no prompt, no LLM)
 #   initialises it, after which the route lists the full skill registry.

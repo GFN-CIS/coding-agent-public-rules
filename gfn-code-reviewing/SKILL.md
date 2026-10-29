@@ -8,7 +8,6 @@ _These rules are for Code-Reviewing process._
 
 Review the change against skill `gfn-code` and every technology skill that applies to it.
 
-
 1. When changes introcuding brand-new entities such as a function, procedures, classes, helpers, etc. - check for reusage opportunities. Is the same or similar functionality already present and it can be reused or generalized/adopted and then reused. 
 2. When doing the full-repository review, check for the opportunities for reusing as stated in previous pt and make a code more consise.
 3. Every finding cites evidence: a location in the change and the rule or source it violates.

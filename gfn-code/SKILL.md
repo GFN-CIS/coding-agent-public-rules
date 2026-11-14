@@ -164,3 +164,6 @@ Documentation, comments, and runbooks are written for both humans and AI agents.
  - When appropriate - the placeholders and monikers could be used.
  - The same applies to documentation and plans that goes to commit.
  - Sanitization covers branch history, not only the final diff: identifiers committed earlier on the branch must be removed by squash or rewrite before merge.
+
+## Secrets naming
+ - All secrets must be suffixed with secret, password or key words since models filter them out good.

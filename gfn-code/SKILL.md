@@ -166,4 +166,4 @@ Documentation, comments, and runbooks are written for both humans and AI agents.
  - Sanitization covers branch history, not only the final diff: identifiers committed earlier on the branch must be removed by squash or rewrite before merge.
 
 ## Secrets naming
- - All secrets must be suffixed with secret, password or key words since models filter them out good.
+ - All secrets must be suffixed with a "secret", "password" or "key" words since models filter them out good by key. In case the entity by it's nature is not password o key, but rather "token" for example, the entity name should be suffexed with "secret" to indicate it's secrecy

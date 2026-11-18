@@ -132,7 +132,7 @@ Be honest: if the project is clean, say so. If a metric is non-informative for t
 3. RP, OP, Score computed; scale / normalization / `k` documented.
 4. Top-N tables present for: files, functions, classes, MI, type-check.
 5. Dep graph stats: nodes, edges, density, cycles.
-6. Raw CSVs saved under `docs/artifacts/`.
+6. Raw CSVs saved under `docs/artifacts/` in projects temporary directory and must not go to commits.
 7. Diagnosis names dominant pressure, hot spots with metric reasons, fix-3 with expected deltas.
 8. Limitations & assumptions explicit (including which candidate tools you considered and rejected).
 
@@ -163,3 +163,7 @@ Dense, quantitative. Numbers before narrative.
 
 - `<TARGET>` — directory/component/repo path.
 - Optionally pass `LANGUAGE=<lang>` to skip auto-detection.
+
+### Artifacts lifecycle
+
+- agent artifacts must never go to public repository.

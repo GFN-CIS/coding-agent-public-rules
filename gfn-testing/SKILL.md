@@ -89,6 +89,7 @@ Always choose the lowest-cost test type that reliably validates the behavior.
   - **Project-level** E2E tests: when the scenario spans multiple modules/components or requires end-to-end wiring across the project.
 - Prefer **auto-discoverable** test locations/naming conventions for the given language/platform/framework so CI/CD can pick up new tests without manual configuration.
   - This avoids manual CI changes per test and prevents a single project-global test folder from growing into an unstructured dump.
+ - Never put testing data like a fixtures or values which are used by tests only into the code. The test data must be placed close to test files.
 
 ## Structure: Arrange / Act / Assert
 

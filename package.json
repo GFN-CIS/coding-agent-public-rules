@@ -1,0 +1,36 @@
+{
+  "name": "@gfn-cis/coding-agent-public-rules",
+  "version": "0.1.0",
+  "description": "GFN coding rules as agent skills; OpenCode 2 plugin that registers them",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "src/skills.js",
+    "gfn-*/**",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test \"src/*.test.js\""
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "skills",
+    "coding-rules"
+  ],
+  "author": "GFN-CIS",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GFN-CIS/coding-agent-public-rules.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "opencode": ">=2.0.0"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
+  }
+}

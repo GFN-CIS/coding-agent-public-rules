@@ -1,0 +1,97 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to release (e.g. v0.2.0)
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+jobs:
+  # Publishes a GitHub Release with the npm pack tarball, its SHA-256 and a Sigstore
+  # build-provenance bundle; the assets let anyone verify that the tag content was
+  # built by this workflow.
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ env.TAG }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Tag matches package version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          [ "v${version}" = "${TAG}" ] || { echo "::error::tag ${TAG} != package.json v${version}"; exit 1; }
+      - run: python3 -m pip install pyyaml==6.0.3
+      - run: python3 scripts/check-skills.py
+      - run: npm ci
+      - run: npm test
+      - run: node scripts/check-pack.mjs
+      - name: Pack
+        id: pack
+        run: |
+          file=$(npm pack --silent)
+          sha256sum "$file" > SHA256SUMS
+          echo "file=$file" >> "$GITHUB_OUTPUT"
+      - id: attest
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ steps.pack.outputs.file }}
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FILE: ${{ steps.pack.outputs.file }}
+          BUNDLE: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          cp "$BUNDLE" "${FILE}.sigstore.json"
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
+            "$FILE" "${FILE}.sigstore.json" SHA256SUMS
+  # Publishes the release tarball (same bytes as the attested asset) to npm through
+  # trusted publishing: npm authenticates this workflow via OIDC, no token exists.
+  # The trusted publisher on npmjs.com is bound to release.yml and environment "npm";
+  # the environment only admits v* tags. Manual dispatch re-releases on GitHub only.
+  npm:
+    needs: release
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: npm supports trusted publishing
+        run: |
+          # OIDC trusted publishing needs npm >= 11.5.1.
+          node -e '
+            const [a, b, c] = process.argv[1].split(".").map(Number);
+            if (a * 1e6 + b * 1e3 + c < 11005001) {
+              console.error("::error::npm " + process.argv[1] + " < 11.5.1");
+              process.exit(1);
+            }' "$(npm --version)"
+      - name: Download release tarball
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "*.tgz" --pattern SHA256SUMS
+          sha256sum -c SHA256SUMS
+      - run: npm publish ./*.tgz --provenance --access public

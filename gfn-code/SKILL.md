@@ -1,6 +1,6 @@
 ---
 name: gfn-code
-description: Mandatory GFN engineering standards for all application and infrastructure code in any language. Apply when writing, modifying, refactoring, debugging, analyzing, or reviewing code, including changes produced by other agents.
+description: Mandatory GFN engineering standards for all application and infrastructure code in any language. Apply when writing, modifying, refactoring, debugging, analyzing, or reviewing code, including infrastructure code and autotest code, including changes produced by other agents.
 ---
 # Global Coding Rules (Language-Agnostic)
 

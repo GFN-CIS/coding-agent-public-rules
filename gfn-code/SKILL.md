@@ -14,7 +14,7 @@ They apply to any type of code: either programming code or infrastructure code (
 - **No secrets / no sensitive data**: never hardcode credentials, tokens, private keys, internal URLs, customer data, or any confidential identifiers.
 - **No environment-specific hardcoding**: domains, tenant/customer names, branding assets, and deployment-specific behavior must be driven by **configuration**, not `if/else` forks.
 - **Consistency over preference**: follow the established style within a file/module/package unless there is a deliberate refactor.
-- **No local requirement relaxation motivations** : if something is relaxed against the best practices, this relaxation must reside in appropriate ADR/Accepted Risk/Release notes of the repository or project. The comments in code/tests/whatever must only refer to it. The motivation: model could put relaxation on it's own into comment and treat it as a carved in stone. This relaxation will be hardly traceable. The single source of relaxations is much better traceable.
+- **No code-local requirement relaxation declarations** : if something is relaxed against the best practices, this relaxation must reside in appropriate ADR/Accepted Risk/Release notes of the repository or project. The comments in code/tests/whatever must only refer to it. The motivation: model could put relaxation on it's own into comment and treat it as a carved in stone. This relaxation will be hardly traceable. The single source of relaxations is much better traceable.
 
 ## Code quality
 
